@@ -39,14 +39,6 @@ class UserController extends Controller
     }
 
     /*
-     * 用户详情页面:GET
-     */
-    public function show(User $user)
-    {
-        return view('users.show', compact('user'));
-    }
-
-    /*
      * 用户注册页面:POST
      */
     public function store(Request $request)
@@ -143,5 +135,16 @@ class UserController extends Controller
         Auth::login($user);
         session()->flash('success', '恭喜你，激活成功！');
         return redirect()->route('users.show', [$user]);
+    }
+
+    /*
+     * 查询用户详情及所有微博:GET
+     */
+    public function show(User $user)
+    {
+        $statuses = $user->statuses()
+            ->orderBy('created_at', 'desc')
+            ->paginate(30);
+        return view('users.show', compact('user', 'statuses'));
     }
 }
