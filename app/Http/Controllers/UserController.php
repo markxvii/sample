@@ -147,4 +147,24 @@ class UserController extends Controller
             ->paginate(30);
         return view('users.show', compact('user', 'statuses'));
     }
+
+    /*
+     * 查询用户的关注人列表:GET
+     */
+    public function followings(User $user)
+    {
+        $users = $user->followings()->paginate(30);
+        $title = '关注的人';
+        return view('users.show_follow', compact('users', 'title'));
+    }
+
+    /*
+     * 查询用户的粉丝列表:GET
+     */
+    public function followers(User $user)
+    {
+        $users = $user->followers()->paginate(30);
+        $title = '粉丝';
+        return view('users.show_follow', compact('users', 'title'));
+    }
 }
